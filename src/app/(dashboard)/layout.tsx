@@ -1,3 +1,4 @@
+import { Navbar } from "@/components/navbar";
 import { Sidebar } from "@/components/sidebar";
 
 interface DashBoardLayoutProps {
@@ -11,9 +12,9 @@ const DashBoard = ({ children }: DashBoardLayoutProps) => {
                 <div className="fixed top-0 left-0 hidden lg:block lg:w-[264px] h-full overflow-y-auto">
                     <Sidebar />
                 </div>
-                <div className="lg:pl-[264px]">
+                <div className="lg:pl-[264px] w-full">
                     <div className="mx-auto max-w-screen-2xl h-full">
-                        {/* TODO nav bar */}
+                        <Navbar />
                         <main className="flex flex-col py-8 px-6 h-full">
                         {children}
                         </main>
