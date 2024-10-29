@@ -1,7 +1,12 @@
+"use client"
+
 import { cn } from "@/lib/utils";
 import { SettingsIcon, UserIcon } from "lucide-react";
 import Link  from "next/link";
 import { GoCheckCircle, GoCheckCircleFill, GoHome, GoHomeFill } from "react-icons/go";
+import { usePathname } from "next/navigation";
+
+import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
 
 const routes = [
     {
@@ -32,6 +37,8 @@ const routes = [
 ]
 
 export const Navigation = () => {
+    const workspaceId = useWorkspaceId();
+    const pathname = usePathname();
     return (
         <ul>
             {routes.map((item) => {
