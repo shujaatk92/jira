@@ -22,7 +22,7 @@ const WorkspaceIdJoinPage = async({ params }: WorkspaceIdJoinPageProps) => {
     
     return(
         <div className="w-full md:max-w-md">
-            <JoinWorkspaceForm initialValues={initialValues}/>
+            <JoinWorkspaceForm initialValues={initialValues} />
         </div>
     );
 };
