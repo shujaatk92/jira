@@ -21,7 +21,7 @@ import { Button } from "@/components/ui/button";
 import { useRef } from "react";
 import Image from "next/image";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { ArrowLeftIcon, ImageIcon } from "lucide-react";
+import { ArrowLeftIcon, CopyIcon, ImageIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Workspace } from "../types";
@@ -90,6 +90,12 @@ export const EditWorkspaceForm = ({ onCancel, initialValues }: EditWorkspaceForm
         if (file) {
             form.setValue("image", file);
         };
+    };
+
+    const fullInviteLink = `${window.location.origin}/workspaces/${initialValues.$id}/join/${initialValues.inviteCode}`;
+
+    const handleCopyInviteLink = () => {
+
     };
 
     return (
@@ -224,6 +230,37 @@ export const EditWorkspaceForm = ({ onCancel, initialValues }: EditWorkspaceForm
                             </div>
                         </form>
                     </Form>
+                </CardContent>
+            </Card>
+            <Card className="w-full h-full shadow-none border-none">
+                <CardContent className="p-7">
+                    <div className="flex flex-col">
+                        <h3 className="font-bold">Invite Members</h3>
+                        <p className="text-sm text-muted-foreground">
+                            Use the invite link to add members to your workspace!
+                        </p>
+                        <div className="mt-4">
+                            <div className="flex items-center gap-x-2">
+                                <Input disabled value={fullInviteLink} />
+                                <Button 
+                                variant="secondary" 
+                                onClick={ handleCopyInviteLink } 
+                                className="size-12">
+                                    <CopyIcon className="size-5"/>
+                                </Button>
+                            </div>
+                        </div>
+                        <Button
+                        className="mt-6 w-fit ml-auto"
+                        size="sm"
+                        variant="destructive"
+                        type="button"
+                        disabled={isPending || isDeletingWorkspace}
+                        onClick={ handleDelete }
+                        >
+                            Delete Workspace
+                        </Button>
+                    </div>
                 </CardContent>
             </Card>
             <Card className="w-full h-full shadow-none border-none">
