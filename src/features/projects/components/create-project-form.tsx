@@ -49,7 +49,6 @@ export const CreateProjectForm = ({ onCancel }: CreateProjectFormProps) => {
             ...values,
             worksapceId,
             image: values.image instanceof File ? values.image : "",
-
         }
         mutate({ form: finalValues }, {
             onSuccess: ({data}) => {
