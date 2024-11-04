@@ -83,7 +83,7 @@ const app = new Hono()
         });
 
         if(!member){
-            return c.json({error: "Unauthorized"}, 400);
+            return c.json({error: "Unauthorized"}, 401);
         }
 
         const projects = await databases.listDocuments(
