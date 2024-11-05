@@ -39,7 +39,7 @@ export const WorkspaceSwitcher = () => {
                 <SelectContent>
                     {workspaces?.documents.map((workspace) => (
                         <SelectItem key={workspace.$id} value={workspace?.$id}>
-                            <div className="flex items-center justify-start gap-3 font-medium">
+                            <div className="flex items-center justify-start gap-3 font-medium cursor-pointer">
                                 <WorkspaceAvatar name={workspace.name} image={workspace.imageUrl} />
                                 <span className="truncate">{workspace.name}</span>
                             </div>

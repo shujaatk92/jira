@@ -18,7 +18,7 @@ const app = new Hono()
         const user = c.get("user");
         const storage = c.get("storage");
 
-        const { name, image, workspaceId } = c.req.valid("form");
+        const { name, image, workspaceId, } = c.req.valid("form");
 
         const member = await getMember({
             databases,
@@ -54,8 +54,8 @@ const app = new Hono()
             ID.unique(),
             {
                 name,
-                imageUrl: uploadedImageUrl,
                 workspaceId,
+                imageUrl: uploadedImageUrl,
             },
         );
 
@@ -73,7 +73,7 @@ const app = new Hono()
         const { workspaceId } = c.req.valid("query");
 
         if(!workspaceId){
-            return c.json({error: "Missing workspaceId"}, 401);
+            return c.json({error: "Missing workspaceId"}, 400);
         }
 
         const member = await getMember({

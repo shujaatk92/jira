@@ -11,7 +11,7 @@ const routes = app
 .route("/auth", auth)
 .route("/workspaces", workspaces)
 .route("/members", members)
-.route("/projects", projects);
+.route("/projects", projects)
 
 
 export const GET = handle(app);

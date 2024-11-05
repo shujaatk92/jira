@@ -37,6 +37,7 @@ export const CreateProjectForm = ({ onCancel }: CreateProjectFormProps) => {
     const router = useRouter();
     const { mutate, isPending } = useCreateProject();
     const inputRef = useRef<HTMLInputElement>(null);
+    
     const form = useForm<z.infer<typeof createProjectSchema>>({
         resolver: zodResolver(createProjectSchema.omit({workspaceId: true})),
         defaultValues: {
@@ -51,7 +52,7 @@ export const CreateProjectForm = ({ onCancel }: CreateProjectFormProps) => {
             image: values.image instanceof File ? values.image : "",
         }
         mutate({ form: finalValues }, {
-            onSuccess: ({data}) => {
+            onSuccess: () => {
                 form.reset();
                 //TODO redirect to project screen
             }
