@@ -33,7 +33,7 @@ interface CreateProjectFormProps {
 
 export const CreateProjectForm = ({ onCancel }: CreateProjectFormProps) => {
 
-    const worksapceId = useWorkspaceId();
+    const workspaceId = useWorkspaceId();
     const router = useRouter();
     const { mutate, isPending } = useCreateProject();
     const inputRef = useRef<HTMLInputElement>(null);
@@ -48,7 +48,7 @@ export const CreateProjectForm = ({ onCancel }: CreateProjectFormProps) => {
     const onSubmit = (values: z.infer<typeof createProjectSchema>) => {
         const finalValues = {
             ...values,
-            worksapceId,
+            workspaceId,
             image: values.image instanceof File ? values.image : "",
         }
         mutate({ form: finalValues }, {
