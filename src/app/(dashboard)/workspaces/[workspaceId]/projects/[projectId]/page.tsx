@@ -1,10 +1,10 @@
 import { getCurrent } from "@/features/auth/actions";
+import { getProject } from "@/features/projects/queries";
 import { redirect } from "next/navigation";
 
 interface ProjectIdpageProps {
     params: {
         projectId: string;
-        workspaceId: string;
     }
 }
 
@@ -13,9 +13,13 @@ const ProjectIdPage = async ({params}:ProjectIdpageProps) => {
     const user = await getCurrent();
     if(!user) redirect("/sign-in");
 
+    const initialValues = await getProject({
+        projectId: params.projectId
+    })
+
     return(
         <div>
-            Project Id {params.projectId} Workspace Id {params.workspaceId}
+            {JSON.stringify(initialValues)}
         </div>
     );
 };
