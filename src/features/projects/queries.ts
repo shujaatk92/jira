@@ -10,7 +10,8 @@ interface GetProjectPrpos {
  }
 
 export const getProject = async ({ projectId }: GetProjectPrpos ) => {
-    try {
+
+   
         const client = new Client()
             .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT!)
             .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT!);
@@ -37,15 +38,10 @@ export const getProject = async ({ projectId }: GetProjectPrpos ) => {
         });
 
         if(!member){
-            return null;
+            throw new Error("Unauthorized!");
         }
-
-
         return project;
-    } catch {
-        return null;
-    }
-}
+    } 
 
 
 
