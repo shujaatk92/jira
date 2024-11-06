@@ -6,15 +6,16 @@ interface ProjectAvatarProps {
     image?: string;
     name: string;
     className?: string;
+    fallbackClassName?: string;
 }
 
 export const ProjectAvatar = ({
-    image, name, className
+    image, name, className, fallbackClassName,
 }: ProjectAvatarProps) => {
     if(image){
         return(
         <div className={cn(
-            "size-10 relative overflow-hidden rounded-md", className
+            "size-5 relative overflow-hidden rounded-md", className
         )}>
             
             <Image src={image} alt={name} className="object-fit" fill />
@@ -24,8 +25,10 @@ export const ProjectAvatar = ({
         
     };
     return(
-        <Avatar className={cn("size-10 rounded-md", className)}>
-            <AvatarFallback className="text-white bg-blue-600 text-lg font-semibold uppercase rounded-md">
+        <Avatar className={cn("size-5 rounded-md", className)}>
+            <AvatarFallback className={cn("text-white bg-blue-600 text-sm font-semibold uppercase rounded-md",
+                fallbackClassName,
+            )}>
                 {name[0]}
             </AvatarFallback>
         </Avatar>
