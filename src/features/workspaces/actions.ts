@@ -6,7 +6,7 @@ import { getMember } from "../members/utils";
 import { Workspace } from "./types";
 
 export const getWorkspaces = async () => {
-    try {
+    
         const client = new Client()
             .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT!)
             .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT!);
@@ -39,10 +39,9 @@ export const getWorkspaces = async () => {
                 Query.contains("$id", workspaceIds)
             ],
         );
+
         return workspaces;
-    } catch {
-        return {documents: [], total: 0};
-    }
+    
 };
 
 interface GetWorkspacePrpos { 
@@ -50,7 +49,7 @@ interface GetWorkspacePrpos {
  }
 
 export const getWorkspace = async ({ workspaceId }: GetWorkspacePrpos ) => {
-    try {
+    
         const client = new Client()
             .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT!)
             .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT!);
@@ -70,7 +69,7 @@ export const getWorkspace = async ({ workspaceId }: GetWorkspacePrpos ) => {
         });
 
         if(!member){
-            return null;
+            throw new Error("Unauthorized");
         }
 
 
@@ -80,9 +79,6 @@ export const getWorkspace = async ({ workspaceId }: GetWorkspacePrpos ) => {
             workspaceId,
         );
         return workspace;
-    } catch {
-        return null;
-    }
 }
 
 
@@ -91,7 +87,7 @@ interface GetWorkspaceInfoPrpos {
  }
 
 export const getWorkspaceInfo = async ({ workspaceId }: GetWorkspaceInfoPrpos ) => {
-    try {
+    
         const client = new Client()
             .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT!)
             .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT!);
@@ -112,7 +108,4 @@ export const getWorkspaceInfo = async ({ workspaceId }: GetWorkspaceInfoPrpos ) 
             name: workspace.name,
         };
 
-    } catch {
-        return null;
-    }
 }

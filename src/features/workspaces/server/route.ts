@@ -95,8 +95,8 @@ const app = new Hono()
             return c.json({ data: workspace });
 
         }
-    ).
-    patch(
+    )
+    .patch(
         "/:workspaceId",
         sessionMiddleware,
         zValidator("form", updateWorkspacesSchema),

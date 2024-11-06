@@ -38,7 +38,7 @@ const ProjectIdPage = async ({ params }: ProjectIdpageProps) => {
                 </div>
                 <div>
                     <Button variant="secondary" size="sm" asChild>
-                        <Link href={`/workspace/${initialValues.workspaceId}/project/${initialValues.$id}/settings`} >
+                        <Link href={`/workspaces/${initialValues.workspaceId}/projects/${initialValues.$id}/settings`} >
                             <PencilIcon className="size-4 mr-2"/>
                             Edit Project
                         </Link>

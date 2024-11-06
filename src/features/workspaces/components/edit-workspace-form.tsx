@@ -82,10 +82,6 @@ export const EditWorkspaceForm = ({ onCancel, initialValues }: EditWorkspaceForm
 
         resetInviteCode({
             param: { workspaceId: initialValues.$id },
-        } ,  {
-            onSuccess: () => {
-                router.refresh();
-            }
         });
     };
 
@@ -99,9 +95,8 @@ export const EditWorkspaceForm = ({ onCancel, initialValues }: EditWorkspaceForm
             form: finalValues,
             param: { workspaceId: initialValues.$id }
         }, {
-            onSuccess: ({ data }) => {
+            onSuccess: () => {
                 form.reset();
-                router.push(`/workspaces/${data.$id}`);
             }
         });
     }
