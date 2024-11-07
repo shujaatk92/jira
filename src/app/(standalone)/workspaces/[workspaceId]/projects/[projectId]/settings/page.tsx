@@ -1,25 +1,34 @@
-import { useCurrent } from "@/features/auth/api/use-current";
+import { getCurrent } from "@/features/auth/actions";
+import { EditProjectForm } from "@/features/projects/components/edit-project-form";
 import { getProject } from "@/features/projects/queries";
 import { redirect } from "next/navigation";
 
 interface ProjectIdSettingsPageProps {
     params: {
-        projectid:string;
+        projectId:string;
     }
 }
 
+
+
 const ProjectIdSettingsPage = async ({ params } : ProjectIdSettingsPageProps) => {
 
-    const user = useCurrent();
+
+    const user = getCurrent();
     if(!user) redirect("/sign-in");
 
-    const initialVAlues = await getProject({
-        projectId: params.projectid
+    const initialValues = await getProject({
+        projectId: params.projectId
     }); 
 
+    if(!initialValues){
+        redirect(`/workspaces/workspaceId/projects/${params.projectId}`);
+    }
+
+
     return(
-        <div>
-            ProjectIdSettingsPage
+        <div className="w-full lg:max-w-xl">
+            <EditProjectForm initialValues={initialValues} />
         </div>
     );
 };

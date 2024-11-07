@@ -78,6 +78,7 @@ export const getWorkspace = async ({ workspaceId }: GetWorkspacePrpos ) => {
             WORKSPACES_ID,
             workspaceId,
         );
+        
         return workspace;
 }
 
