@@ -5,6 +5,7 @@ import { getProject } from "@/features/projects/queries";
 import { PencilIcon } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { TaskViewSwitcher } from "@/features/tasks/components/task-view-switcher";
 
 interface ProjectIdpageProps {
     params: {
@@ -46,8 +47,8 @@ const ProjectIdPage = async ({ params }: ProjectIdpageProps) => {
 
                 </div>
             </div>
-            {JSON.stringify(initialValues)}
-        </div >
+            <TaskViewSwitcher />
+        </div>
     );
 };
 export default ProjectIdPage;

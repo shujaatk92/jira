@@ -52,9 +52,9 @@ export const CreateProjectForm = ({ onCancel }: CreateProjectFormProps) => {
             image: values.image instanceof File ? values.image : "",
         }
         mutate({ form: finalValues }, {
-            onSuccess: () => {
+            onSuccess: ({data}) => {
                 form.reset();
-                //TODO redirect to project screen
+                router.push(`/workspaces/${workspaceId}/projects/${data.$id}`);
             }
         });
     }

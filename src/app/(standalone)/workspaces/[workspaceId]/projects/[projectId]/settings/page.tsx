@@ -20,11 +20,9 @@ const ProjectIdSettingsPage = async ({ params } : ProjectIdSettingsPageProps) =>
     const initialValues = await getProject({
         projectId: params.projectId
     }); 
-
     if(!initialValues){
-        redirect(`/workspaces/workspaceId/projects/${params.projectId}`);
+        return;
     }
-
 
     return(
         <div className="w-full lg:max-w-xl">

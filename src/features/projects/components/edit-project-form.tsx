@@ -21,12 +21,13 @@ import { Button } from "@/components/ui/button";
 import { useRef } from "react";
 import Image from "next/image";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { ArrowLeftIcon, CopyIcon, ImageIcon } from "lucide-react";
+import { ArrowLeftIcon, ImageIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Project } from "../types";
 import { useUpdateProject } from "../api/use-update-project";
 import { useConfirm } from "@/hooks/use-confirm";
+import { useDeleteProject } from "../api/use-delete-project";
 
 interface EditProjectFormProps {
     onCancel?: () => void;
@@ -44,7 +45,7 @@ export const EditProjectForm = ({ onCancel, initialValues }: EditProjectFormProp
     const router = useRouter();
     const { mutate, isPending } = useUpdateProject();
 
-    // const { mutate: deleteWorkspace, isPending: isDeletingWorkspace } = useDeleteWorkspace();
+    const { mutate: deleteProject, isPending: isDeletingProject } = useDeleteProject();
 
     const inputRef = useRef<HTMLInputElement>(null);
     const form = useForm<z.infer<typeof updateProjectSchema>>({
@@ -59,13 +60,13 @@ export const EditProjectForm = ({ onCancel, initialValues }: EditProjectFormProp
         const ok = await confirmDelete();
         if(!ok) return;
 
-        // deleteWorkspace({
-        //     param: { workspaceId: initialValues.$id },
-        // } ,  {
-        //     onSuccess: () => {
-        //         window.location.href = "/";
-        //     }
-        // });
+        deleteProject({
+            param: { projectId: initialValues.$id },
+        } ,  {
+            onSuccess: () => {
+                window.location.href = `/workspaces/${initialValues.workspaceId}`;
+            }
+        });
     };
 
 
@@ -99,7 +100,7 @@ export const EditProjectForm = ({ onCancel, initialValues }: EditProjectFormProp
             <DeleteDialog />
             <Card className="w-full h-full border-none shadow-none">
                 <CardHeader className="flex flex-row items-center gap-x-4 p-7 space-y-0">
-                    <Button size="sm" variant="secondary" onClick={onCancel ? onCancel : () => router.push(`/workspaces/${initialValues.$id}`)}>
+                    <Button size="sm" variant="secondary" onClick={onCancel ? onCancel : () => router.push(`/workspaces/${initialValues.workspaceId}/projects/${initialValues.$id}`)}>
                         <ArrowLeftIcon className="size-4" />
                         Back
                     </Button>
@@ -242,7 +243,7 @@ export const EditProjectForm = ({ onCancel, initialValues }: EditProjectFormProp
                         size="sm"
                         variant="destructive"
                         type="button"
-                        disabled={isPending}
+                        disabled={isDeletingProject}
                         onClick={ handleDelete }
                         >
                             Delete Project
