@@ -5,14 +5,44 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PlusIcon } from "@radix-ui/react-icons";
 import { useCreateTaskModal } from "../hooks/use-create-task-modal";
+import { useGetTasks } from "../api/use-get-tasks";
+import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
+import { useQueryState } from "nuqs";
+import { Loader } from "lucide-react";
+import { DataFelters } from "./data-filters";
+import { UseTaskFilters } from "../hooks/use-task-filters";
+
 
 export const TaskViewSwitcher = () => {
 
+    const [{
+        projectId,
+        status,
+        assigneeId,
+        dueDate, 
+    }] = UseTaskFilters();
+
+    const [view, setView] = useQueryState("task-view", {
+        defaultValue: "table",
+    });
+
+    const workspaceId = useWorkspaceId();
+
+    const { data: tasks, isLoading: isLoadingtasks } = useGetTasks({ 
+        workspaceId,
+        projectId,
+        status,
+        assigneeId,
+        dueDate
+     });
     const { open } = useCreateTaskModal();
 
 
     return (
-        <Tabs className="flex-1 w-full border rounded-lg">
+        <Tabs
+            defaultValue={view}
+            onValueChange={setView}
+            className="flex-1 w-full border rounded-lg">
             <div className="h-full flex flex-col overflow-auto p-4">
                 <div className="flex flex-col gap-y-2 md:flex-row justify-between items-center">
                     <TabsList className="w-full md:w-auto">
@@ -27,7 +57,7 @@ export const TaskViewSwitcher = () => {
                         </TabsTrigger>
                     </TabsList>
                     <Button
-                    onClick={open}
+                        onClick={open}
                         size="sm"
                         className="w-full md:w-auto"
                     >
@@ -36,19 +66,25 @@ export const TaskViewSwitcher = () => {
                     </Button>
                 </div>
                 <DottedSeparator className="my-4" />
-                Data Filters
+                <DataFelters />
                 <DottedSeparator className="my-4" />
-                <>
-                    <TabsContent value="table" className="mt-0">
-                        Data Table
-                    </TabsContent>
-                    <TabsContent value="kanban" className="mt-0">
-                        Data Kanban
-                    </TabsContent>
-                    <TabsContent value="calendar" className="mt-0">
-                        Data Calendar
-                    </TabsContent>
-                </>
+                {isLoadingtasks ? (
+                    <div className="w-full border rounded-lg flex flex-col items-center justify-center h-[200px]">
+                        <Loader className="size-5 animate-spin text-muted-foreground" />
+                    </div>
+                ) : (
+                    <>
+                        <TabsContent value="table" className="mt-0">
+                            {JSON.stringify(tasks)}
+                        </TabsContent>
+                        <TabsContent value="kanban" className="mt-0">
+                            {JSON.stringify(tasks)}
+                        </TabsContent>
+                        <TabsContent value="calendar" className="mt-0">
+                            {JSON.stringify(tasks)}
+                        </TabsContent>
+                    </>
+                )}
             </div>
         </Tabs>
     );
