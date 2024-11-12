@@ -248,12 +248,12 @@ const app = new Hono()
 
         const member = await getMember({
             databases,
-            workspaceId: existingTasks.$id,
+            workspaceId: existingTasks.workspaceId,
             userId: user.$id
         });
 
         if(!member){
-            return c.json({error: "Unauthorized"}, 401);
+            return c.json({error: "Unauthorized user"}, 401);
         }
 
         const task = await databases.updateDocument<Task>(
@@ -263,16 +263,16 @@ const app = new Hono()
             {
                 name,
                 status,
+                description,
                 projectId,
                 dueDate,
                 assigneeId,
-                description,
             }
         );
 
         return c.json({data: task});
 
-    }
+    },
 )
 .get(
     "/:taskId",
@@ -325,9 +325,7 @@ const app = new Hono()
                 ...task,
                 project,
                 assignee,
-        }})
-
-
+        }});
     },
 );
 

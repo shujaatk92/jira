@@ -37,7 +37,7 @@ interface EditTaskFormProps {
 
 export const EditTaskForm = ({ onCancel, projectOptions, memberOptions, initialValues }: EditTaskFormProps) => {
 
-    const workspaceId = useWorkspaceId();
+    // const workspaceId = useWorkspaceId();
     const { mutate, isPending } = useUpdateTask();
 
     const form = useForm<z.infer<typeof createTasksSchemas>>({
@@ -60,7 +60,7 @@ export const EditTaskForm = ({ onCancel, projectOptions, memberOptions, initialV
 
 
     return (
-        <Card className="w-full h-full border-none shadow-none overflow-y-auto">
+        <Card className="w-full max-h-[600px] border-none shadow-none overflow-y-auto">
             <CardHeader className="flex p-7">
                 <CardTitle className="text-xl font-bold">
                     Edit a task

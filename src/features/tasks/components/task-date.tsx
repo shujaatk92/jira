@@ -16,7 +16,7 @@ export const TaskDate = ({
 
     let textColor = "text-muted-foreground";
 
-    if(diffInDays <= 0){
+    if(diffInDays <= -1){
         textColor = "text-red-900 line-through"
     }
     else if(diffInDays <= 3){

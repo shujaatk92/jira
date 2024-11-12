@@ -58,7 +58,7 @@ export const CreateTaskForm = ({ onCancel, projectOptions, memberOptions }: Crea
 
 
     return (
-        <Card className="w-full h-full border-none shadow-none overflow-y-auto">
+        <Card className="w-full max-h-[600px] border-none shadow-none overflow-y-auto">
             <CardHeader className="flex p-7">
                 <CardTitle className="text-xl font-bold">
                     Create a new task
