@@ -1,6 +1,6 @@
 import { DragDropContext, Draggable, Droppable, type DropResult } from "@hello-pangea/dnd";
 
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Task, taskStatus } from "../type";
 import { KanbanColumnHeader } from "./kanban-column-header";
 import { KanbanCard } from "./kanban-card";
@@ -19,8 +19,9 @@ type TasksState = {
 
 interface DataKanbanProps {
     data: Task[];
+    onChange: (tasks: {$id: string, status: taskStatus, position: number}[]) => void;
 }
-export const DataKanban = ({data}:DataKanbanProps) => {
+export const DataKanban = ({data, onChange,}:DataKanbanProps) => {
 
     const [tasks, setTasks] = useState<TasksState>(() => {
 
@@ -42,6 +43,28 @@ export const DataKanban = ({data}:DataKanbanProps) => {
 
         return initialTasks;
     });
+
+    useEffect( () => {
+
+        const newTasks: TasksState = {
+            [taskStatus.BACKLOG]: [],
+            [taskStatus.TODO]: [],
+            [taskStatus.IN_PROGRESS]: [],
+            [taskStatus.IN_REVIEW]: [],
+            [taskStatus.DONE]: [],
+        };
+
+        data.forEach( (task) => {
+            newTasks[task.status].push(task);
+        });
+
+        Object.keys(newTasks).forEach((status) => {
+            newTasks[status as taskStatus].sort((a,b) => a.position - b.position);
+        });
+
+        setTasks(newTasks);
+
+    }, [data]);
 
     const onDragEnd = useCallback( (result: DropResult) => {
 
@@ -93,24 +116,41 @@ export const DataKanban = ({data}:DataKanbanProps) => {
             //Update positions for affected task in the destination column
             newTasks[destStatus].forEach((task, index) => {
                 if(task && task.$id !== updatedMovedTask.$id){
-                    const newPostion = Math.min((index + 1) * 1000, 1_000_000);
-                    if(task.position !== newPostion){
+                    const newPosition = Math.min((index + 1) * 1000, 1_000_000);
+                    if(task.position !== newPosition){
                         updatesPayload.push({
                             $id: task.$id,
                             status: destStatus,
-                            position: newPostion,
+                            position: newPosition,
                         });
                     };
                 };
             });
 
             //If the task moved between column, update positions in the source column
-        });
+            if(sourceStatus !== destStatus){
+                newTasks[sourceStatus].forEach((task, index) => {
+                    if(task){
+                        const newPosition = Math.min((index + 1) * 1000, 1_000_000);
+                        if(task.position !== newPosition){
+                            updatesPayload.push({
+                                $id: task.$id,
+                                status: sourceStatus,
+                                position: newPosition,
+                            });
+                        };
+                    };
+                });
 
-    }, []);
+            };
+            return newTasks;
+        });
+        onChange(updatesPayload);
+
+    }, [onChange]);
 
     return(
-        <DragDropContext onDragEnd={() => {}} >
+        <DragDropContext onDragEnd={onDragEnd} >
             <div className="flex overflow-x-auto">
                 {boards.map((board) => {
                     return(
